@@ -1,0 +1,28 @@
+name: Build Docs
+
+on: 
+  push:
+    branches: [main]
+
+jobs:
+  convert_via_pandoc:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Print output
+      uses: docker://pandoc/latex:2.12
+      with: 
+          args: >-
+            content/test.md
+            --resource-path=content
+            --from=markdown
+            --output=documentation.pdf
+            --toc
+    - uses: actions/upload-artifact@v2
+      with:
+        name: export-pdf
+        path: |
+          output_print.pdf
+          
